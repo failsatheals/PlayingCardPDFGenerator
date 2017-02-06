@@ -355,8 +355,8 @@ namespace PDFGenerator
                 }
 
             }
-
-            //reorderPDF(pdf);
+            pdf.Close();
+            reorderPDF();
             //for (var x = 0; x < pages * 2; x++)
             //{
             //    pdf.NewPage();
@@ -383,19 +383,53 @@ namespace PDFGenerator
 
 
             //}
-            pdf.Close();
+          
 
         }
 
-        private void reorderPDF(Document pdf)
+        private void reorderPDF()
         {
-            //pdf.NewPage();
-            //PdfWriter pdfWrite = new PdfWriter();
-            //var numPages = pdfWrite.ReorderPages(null);
+            var inputFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "deck.pdf");
+            var output = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Output.pdf");
 
-            //PdfDocument srcDoc = new PdfDocument(new PdfReader(pdf));
-            //PdfDocument resultDoc = new PdfDocument(new PdfWriter(dest));
-            //resultDoc.initializeOutlines();
+            PdfReader reader = new PdfReader(inputFile);
+
+            using (FileStream fs = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                using (Document pdf = new Document(reader.GetPageSizeWithRotation(1)))
+                {
+                    
+                    PdfCopy copy = new PdfCopy(pdf, fs);
+                    pdf.Open();
+                    copy.SetLinearPageMode();
+                    int[] newOrder = new int[reader.NumberOfPages];
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        copy.AddPage(copy.GetImportedPage(reader, i));
+                    }
+                    int counter = 0;
+                    for (int i = 1; i <= reader.NumberOfPages; i++)
+                    {
+                        
+                        if(i%2 == 0)
+                        {
+                            newOrder[i-1] = (reader.NumberOfPages/2)+newOrder[i-2];
+
+                        }
+                        else
+                        {
+                            newOrder[i-1] = i - counter;
+                            counter++;
+                        }
+
+                        
+
+                    }
+                    //Reorder pages
+                    copy.ReorderPages(newOrder);
+                    pdf.Close();
+                }
+            }
 
         }
 

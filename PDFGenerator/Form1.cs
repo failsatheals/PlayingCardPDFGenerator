@@ -20,12 +20,18 @@ namespace PDFGenerator
     public partial class Form1 : Form
     {
         Deck deck;
-        private readonly int dpi600Width = 4961;
-        private readonly int dpi600Height = 7016;
-        private readonly int dpi300Width = 2480;
-        private readonly int dpi300Height = 3508;
-        private readonly int mmWidth = 210;
-        private readonly int mmHeight = 297;
+        private readonly int dpi600WidthA4 = 4961;
+        private readonly int dpi600HeightA4 = 7016;
+        private readonly int dpi300WidthA4 = 2480;
+        private readonly int dpi300HeightA4 = 3508;
+        private readonly int dpi600WidthLetter = 5100;
+        private readonly int dpi600HeightLetter = 6600;
+        private readonly int dpi300WidthLetter = 2550;
+        private readonly int dpi300HeightLetter = 3300;
+        private readonly int mmWidthA4 = 210;
+        private readonly int mmHeightA4 = 297;
+        private readonly int mmWidthLetter = 210;
+        private readonly int mmHeightLetter = 297;
         private readonly float dpi600PPMM = 4961.00f / 210.00f;
         private readonly float dpi300PPMM = 2480.00f / 210.00f;
         private readonly float pokerWidthMM = 63;
@@ -128,7 +134,7 @@ namespace PDFGenerator
                 card.quantity = determineQuantity(quantityText);
                 deck.Cards.Add(card);
                 frontListBox.Items.Add(card.frontFP);
-                rearListBox.Items.Add(card.rearFP);
+            z    rearListBox.Items.Add(card.rearFP);
                 quantityListBox.Items.Add(card.quantity);
             }
             else

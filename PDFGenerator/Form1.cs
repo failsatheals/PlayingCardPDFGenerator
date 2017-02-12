@@ -20,20 +20,22 @@ namespace PDFGenerator
     public partial class Form1 : Form
     {
         Deck deck;
-        private readonly int dpi600WidthA4 = 4961;
-        private readonly int dpi600HeightA4 = 7016;
-        private readonly int dpi300WidthA4 = 2480;
-        private readonly int dpi300HeightA4 = 3508;
-        private readonly int dpi600WidthLetter = 5100;
-        private readonly int dpi600HeightLetter = 6600;
-        private readonly int dpi300WidthLetter = 2550;
-        private readonly int dpi300HeightLetter = 3300;
-        private readonly int mmWidthA4 = 210;
-        private readonly int mmHeightA4 = 297;
-        private readonly int mmWidthLetter = 210;
-        private readonly int mmHeightLetter = 297;
-        private readonly float dpi600PPMM = 4961.00f / 210.00f;
-        private readonly float dpi300PPMM = 2480.00f / 210.00f;
+        private readonly float dpi600Width_A4 = 4961;
+        private readonly float dpi600Height_A4 = 7016;
+        private readonly float dpi300Width_A4 = 2480;
+        private readonly float dpi300Height_A4 = 3508;
+        private readonly float mmWidth_A4 = 210;
+        private readonly float mmHeight_A4 = 297;
+        private readonly float dpi600PPMM_A4 = 4961.00f / 210.00f;
+        private readonly float dpi300PPMM_A4 = 2480.00f / 210.00f;
+        private readonly float dpi600Width_Letter = 5100;
+        private readonly float dpi600Height_Letter = 6600;
+        private readonly float dpi300Width_Letter = 2550;
+        private readonly float dpi300Height_Letter = 3300;
+        private readonly float mmWidth_Letter = 215.90f;
+        private readonly float mmHeight_Letter = 279.40f;
+        private readonly float dpi600PPMM_Letter = 5100.00f / 215.90f;
+        private readonly float dpi300PPMM_Letter = 2550.00f / 279.40f;
         private readonly float pokerWidthMM = 63;
         private readonly float pokerHeightMM = 88;
 

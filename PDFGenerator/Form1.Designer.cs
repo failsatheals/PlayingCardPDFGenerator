@@ -32,7 +32,7 @@
             System.Windows.Forms.ListViewGroup listViewGroup3 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
             System.Windows.Forms.ListViewGroup listViewGroup1 = new System.Windows.Forms.ListViewGroup("ListViewGroup", System.Windows.Forms.HorizontalAlignment.Left);
             this.label2 = new System.Windows.Forms.Label();
-            this.generate = new System.Windows.Forms.Button();
+            this.preview = new System.Windows.Forms.Button();
             this.findFolder = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.folderText = new System.Windows.Forms.TextBox();
@@ -59,29 +59,34 @@
             this.removeButton = new System.Windows.Forms.Button();
             this.updateQuantityButton = new System.Windows.Forms.Button();
             this.updateQuantityText = new System.Windows.Forms.TextBox();
-            this.DPILabel = new System.Windows.Forms.Label();
             this.DPI300RB = new System.Windows.Forms.RadioButton();
             this.DPI600RB = new System.Windows.Forms.RadioButton();
+            this.LetterRB = new System.Windows.Forms.RadioButton();
+            this.A4RB = new System.Windows.Forms.RadioButton();
+            this.DPIGB = new System.Windows.Forms.GroupBox();
+            this.PaperSizeGB = new System.Windows.Forms.GroupBox();
+            this.DPIGB.SuspendLayout();
+            this.PaperSizeGB.SuspendLayout();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(44, 772);
+            this.label2.Location = new System.Drawing.Point(654, 733);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(75, 13);
             this.label2.TabIndex = 0;
             this.label2.Text = "Generate PDF";
             // 
-            // generate
+            // preview
             // 
-            this.generate.Location = new System.Drawing.Point(445, 767);
-            this.generate.Name = "generate";
-            this.generate.Size = new System.Drawing.Size(75, 23);
-            this.generate.TabIndex = 1;
-            this.generate.Text = "Generate";
-            this.generate.UseVisualStyleBackColor = true;
-            this.generate.Click += new System.EventHandler(this.generate_Click);
+            this.preview.Location = new System.Drawing.Point(250, 789);
+            this.preview.Name = "preview";
+            this.preview.Size = new System.Drawing.Size(163, 23);
+            this.preview.TabIndex = 1;
+            this.preview.Text = "Preview with default program";
+            this.preview.UseVisualStyleBackColor = true;
+            this.preview.Click += new System.EventHandler(this.generate_Click);
             // 
             // findFolder
             // 
@@ -114,7 +119,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(44, 729);
+            this.label5.Location = new System.Drawing.Point(40, 795);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 13);
             this.label5.TabIndex = 8;
@@ -123,7 +128,7 @@
             // 
             // outputText
             // 
-            this.outputText.Location = new System.Drawing.Point(153, 769);
+            this.outputText.Location = new System.Drawing.Point(602, 756);
             this.outputText.Name = "outputText";
             this.outputText.Size = new System.Drawing.Size(226, 20);
             this.outputText.TabIndex = 12;
@@ -232,7 +237,7 @@
             // 
             // bleedText
             // 
-            this.bleedText.Location = new System.Drawing.Point(152, 726);
+            this.bleedText.Location = new System.Drawing.Point(124, 792);
             this.bleedText.Name = "bleedText";
             this.bleedText.Size = new System.Drawing.Size(100, 20);
             this.bleedText.TabIndex = 26;
@@ -321,23 +326,13 @@
             this.updateQuantityText.Size = new System.Drawing.Size(59, 20);
             this.updateQuantityText.TabIndex = 35;
             // 
-            // DPILabel
-            // 
-            this.DPILabel.AutoSize = true;
-            this.DPILabel.Location = new System.Drawing.Point(47, 698);
-            this.DPILabel.Name = "DPILabel";
-            this.DPILabel.Size = new System.Drawing.Size(25, 13);
-            this.DPILabel.TabIndex = 36;
-            this.DPILabel.Text = "DPI";
-            // 
             // DPI300RB
             // 
             this.DPI300RB.AutoSize = true;
-            this.DPI300RB.Location = new System.Drawing.Point(153, 698);
+            this.DPI300RB.Location = new System.Drawing.Point(24, 32);
             this.DPI300RB.Name = "DPI300RB";
             this.DPI300RB.Size = new System.Drawing.Size(43, 17);
             this.DPI300RB.TabIndex = 37;
-            this.DPI300RB.TabStop = true;
             this.DPI300RB.Text = "300";
             this.DPI300RB.UseVisualStyleBackColor = true;
             // 
@@ -345,20 +340,64 @@
             // 
             this.DPI600RB.AutoSize = true;
             this.DPI600RB.Checked = true;
-            this.DPI600RB.Location = new System.Drawing.Point(209, 696);
+            this.DPI600RB.Location = new System.Drawing.Point(81, 32);
             this.DPI600RB.Name = "DPI600RB";
             this.DPI600RB.Size = new System.Drawing.Size(43, 17);
             this.DPI600RB.TabIndex = 38;
             this.DPI600RB.TabStop = true;
             this.DPI600RB.Text = "600";
             this.DPI600RB.UseVisualStyleBackColor = true;
+            this.DPI600RB.CheckedChanged += new System.EventHandler(this.DPI600RB_CheckedChanged);
+            // 
+            // LetterRB
+            // 
+            this.LetterRB.AutoSize = true;
+            this.LetterRB.Location = new System.Drawing.Point(25, 34);
+            this.LetterRB.Name = "LetterRB";
+            this.LetterRB.Size = new System.Drawing.Size(52, 17);
+            this.LetterRB.TabIndex = 40;
+            this.LetterRB.Text = "Letter";
+            this.LetterRB.UseVisualStyleBackColor = true;
+            // 
+            // A4RB
+            // 
+            this.A4RB.AutoSize = true;
+            this.A4RB.Checked = true;
+            this.A4RB.Location = new System.Drawing.Point(93, 32);
+            this.A4RB.Name = "A4RB";
+            this.A4RB.Size = new System.Drawing.Size(38, 17);
+            this.A4RB.TabIndex = 41;
+            this.A4RB.TabStop = true;
+            this.A4RB.Text = "A4";
+            this.A4RB.UseVisualStyleBackColor = true;
+            // 
+            // DPIGB
+            // 
+            this.DPIGB.Controls.Add(this.DPI300RB);
+            this.DPIGB.Controls.Add(this.DPI600RB);
+            this.DPIGB.Location = new System.Drawing.Point(43, 699);
+            this.DPIGB.Name = "DPIGB";
+            this.DPIGB.Size = new System.Drawing.Size(159, 77);
+            this.DPIGB.TabIndex = 42;
+            this.DPIGB.TabStop = false;
+            this.DPIGB.Text = "DPI";
+            // 
+            // PaperSizeGB
+            // 
+            this.PaperSizeGB.Controls.Add(this.A4RB);
+            this.PaperSizeGB.Controls.Add(this.LetterRB);
+            this.PaperSizeGB.Location = new System.Drawing.Point(254, 699);
+            this.PaperSizeGB.Name = "PaperSizeGB";
+            this.PaperSizeGB.Size = new System.Drawing.Size(159, 77);
+            this.PaperSizeGB.TabIndex = 43;
+            this.PaperSizeGB.TabStop = false;
+            this.PaperSizeGB.Text = "Paper Size";
             // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1379, 831);
-            this.Controls.Add(this.DPI600RB);
-            this.Controls.Add(this.DPI300RB);
-            this.Controls.Add(this.DPILabel);
+            this.Controls.Add(this.PaperSizeGB);
+            this.Controls.Add(this.DPIGB);
             this.Controls.Add(this.updateQuantityText);
             this.Controls.Add(this.updateQuantityButton);
             this.Controls.Add(this.removeButton);
@@ -383,9 +422,13 @@
             this.Controls.Add(this.folderText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.findFolder);
-            this.Controls.Add(this.generate);
+            this.Controls.Add(this.preview);
             this.Controls.Add(this.label2);
             this.Name = "Form1";
+            this.DPIGB.ResumeLayout(false);
+            this.DPIGB.PerformLayout();
+            this.PaperSizeGB.ResumeLayout(false);
+            this.PaperSizeGB.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -395,7 +438,7 @@
 
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button generate;
+        private System.Windows.Forms.Button preview;
         private System.Windows.Forms.Button findFolder;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox folderText;
@@ -422,8 +465,11 @@
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.Button updateQuantityButton;
         private System.Windows.Forms.TextBox updateQuantityText;
-        private System.Windows.Forms.Label DPILabel;
         private System.Windows.Forms.RadioButton DPI300RB;
         private System.Windows.Forms.RadioButton DPI600RB;
+        private System.Windows.Forms.RadioButton LetterRB;
+        private System.Windows.Forms.RadioButton A4RB;
+        private System.Windows.Forms.GroupBox DPIGB;
+        private System.Windows.Forms.GroupBox PaperSizeGB;
     }
 }

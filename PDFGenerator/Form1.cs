@@ -11,6 +11,7 @@ using System.IO;
 using iTextSharp;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using System.Diagnostics;
 
 
 
@@ -136,7 +137,7 @@ namespace PDFGenerator
                 card.quantity = determineQuantity(quantityText);
                 deck.Cards.Add(card);
                 frontListBox.Items.Add(card.frontFP);
-            z    rearListBox.Items.Add(card.rearFP);
+                rearListBox.Items.Add(card.rearFP);
                 quantityListBox.Items.Add(card.quantity);
             }
             else
@@ -315,11 +316,12 @@ namespace PDFGenerator
         {
             //check if 0 cards in deck
 
-            iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(dpi600Width, dpi600Height);
+            iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(dpi600Width_A4, dpi600Height_A4);
             Document pdf = new Document(rect);
             //pdf.SetPageSize(rect);
             pdf.AddCreator("ICWT Dev");
-            var output = File.Create("deck.pdf");
+            string unorderedPDF = "UnorderedDeck.pdf";
+            var output = File.Create(unorderedPDF);
             PdfWriter.GetInstance(pdf, output);
             pdf.Open();
             int pages = calculatePages();
@@ -335,7 +337,7 @@ namespace PDFGenerator
                         cord = 0;
                     }
                     iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + card.frontFP);
-                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM, pokerHeightMM * dpi600PPMM);
+                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM_A4, pokerHeightMM * dpi600PPMM_A4);
                     image.SetAbsolutePosition(cords[cord, 0], cords[cord, 1]);
                     pdf.Add(image);
                     cord++;
@@ -355,7 +357,7 @@ namespace PDFGenerator
                         cord = 0;
                     }
                     iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + card.rearFP);
-                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM, pokerHeightMM * dpi600PPMM);
+                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM_A4, pokerHeightMM * dpi600PPMM_A4);
                     image.SetAbsolutePosition(cords[cord, 0], cords[cord, 1]);
                     pdf.Add(image);
                     cord++;
@@ -364,43 +366,18 @@ namespace PDFGenerator
 
             }
             pdf.Close();
-            reorderPDF();
-            //for (var x = 0; x < pages * 2; x++)
-            //{
-            //    pdf.NewPage();
-            //    for (var y = 0; y < 9; y++)
-            //    {
-
-            //        if (x % 2 == 1)
-            //        {
-            //            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + deck.Cards[0].frontFP);
-            //            image.ScaleAbsolute(pokerWidthMM * dpi600PPMM, pokerHeightMM * dpi600PPMM);
-            //            image.SetAbsolutePosition(cords[y, 0], cords[y, 1]);
-            //            pdf.Add(image);
-            //        }
-            //        else
-            //        {
-            //            iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + deck.Cards[0].rearFP);
-            //            image.ScaleAbsolute(pokerWidthMM * dpi600PPMM, pokerHeightMM * dpi600PPMM);
-            //            image.SetAbsolutePosition(cords[y, 0], cords[y, 1]);
-            //            pdf.Add(image);
-
-            //        }
-
-            //    }
-
-
-            //}
+            reorderPDF(unorderedPDF);
+            
           
 
         }
 
-        private void reorderPDF()
+        private void reorderPDF(string unorderedPDF)
         {
-            var inputFile = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "deck.pdf");
-            var output = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "Output.pdf");
 
-            PdfReader reader = new PdfReader(inputFile);
+            var output = ("OrderedDeck.pdf");
+
+            PdfReader reader = new PdfReader(unorderedPDF);
 
             using (FileStream fs = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None))
             {
@@ -438,7 +415,7 @@ namespace PDFGenerator
                     pdf.Close();
                 }
             }
-
+            Process.Start(output);
         }
 
        
@@ -447,16 +424,16 @@ namespace PDFGenerator
         {
             float[,] cords = new float[9, 2];
             float bleed = determineBleed();
-            float x = (pdf.PageSize.Width / 2) - ((pokerWidthMM * dpi600PPMM) / 2) - (pokerWidthMM * dpi600PPMM) - bleed;
-            float y = (pdf.PageSize.Height / 2) - ((pokerHeightMM * dpi600PPMM) / 2) - (pokerHeightMM * dpi600PPMM) - bleed;
+            float x = (pdf.PageSize.Width / 2) - ((pokerWidthMM * dpi600PPMM_A4) / 2) - (pokerWidthMM * dpi600PPMM_A4) - bleed;
+            float y = (pdf.PageSize.Height / 2) - ((pokerHeightMM * dpi600PPMM_A4) / 2) - (pokerHeightMM * dpi600PPMM_A4) - bleed;
             int z = 0;
             for (var i = 0; i < 3; i++)
             {
                 for (var j = 0; j < 3; j++)
                 {
 
-                    cords[z, 0] = x + j * (pokerWidthMM * dpi600PPMM + bleed);
-                    cords[z, 1] = y + i * (pokerHeightMM * dpi600PPMM + bleed);
+                    cords[z, 0] = x + j * (pokerWidthMM * dpi600PPMM_A4 + bleed);
+                    cords[z, 1] = y + i * (pokerHeightMM * dpi600PPMM_A4 + bleed);
                     z++;
                 }
 
@@ -472,12 +449,12 @@ namespace PDFGenerator
             if (DPI300RB.Checked == true)
             {
 
-                return bleed * dpi300PPMM;
+                return bleed * dpi300PPMM_A4;
             }
             else if (DPI600RB.Checked == true)
             {
 
-                return bleed * dpi600PPMM;
+                return bleed * dpi600PPMM_A4;
             }
             else
             {
@@ -492,6 +469,15 @@ namespace PDFGenerator
             double pages = Convert.ToDouble(deck.getDeckQuantity()) / 9.0;
             return (int)Math.Ceiling(pages);
         }
+
+       
+
+        private void DPI600RB_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+       
 
     }
 }

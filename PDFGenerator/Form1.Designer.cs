@@ -36,7 +36,6 @@
             this.findFolder = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.folderText = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.DestinationTB = new System.Windows.Forms.TextBox();
             this.frontText = new System.Windows.Forms.TextBox();
             this.rearText = new System.Windows.Forms.TextBox();
@@ -54,7 +53,7 @@
             this.frontListBox = new System.Windows.Forms.ListBox();
             this.rearListBox = new System.Windows.Forms.ListBox();
             this.quantityListBox = new System.Windows.Forms.ListBox();
-            this.label4 = new System.Windows.Forms.Label();
+            this.FileExtesionLabel = new System.Windows.Forms.Label();
             this.clearButton = new System.Windows.Forms.Button();
             this.removeButton = new System.Windows.Forms.Button();
             this.updateQuantityButton = new System.Windows.Forms.Button();
@@ -70,9 +69,25 @@
             this.DestinationFileNameTB = new System.Windows.Forms.TextBox();
             this.CardSizeGB = new System.Windows.Forms.GroupBox();
             this.PokerRB = new System.Windows.Forms.RadioButton();
+            this.BleedGB = new System.Windows.Forms.GroupBox();
+            this.OneMMRB = new System.Windows.Forms.RadioButton();
+            this.ThreeMMRB = new System.Windows.Forms.RadioButton();
+            this.FiveMMRB = new System.Windows.Forms.RadioButton();
+            this.CustonBleedRB = new System.Windows.Forms.RadioButton();
+            this.ZeroMMRB = new System.Windows.Forms.RadioButton();
+            this.LaunchCB = new System.Windows.Forms.CheckBox();
+            this.PNGCB = new System.Windows.Forms.CheckBox();
+            this.JPEGCB = new System.Windows.Forms.CheckBox();
+            this.GIFCB = new System.Windows.Forms.CheckBox();
+            this.TIFFCB = new System.Windows.Forms.CheckBox();
+            this.CustomExtensionCB = new System.Windows.Forms.CheckBox();
+            this.CustomExtensionTB = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.MutualTB = new System.Windows.Forms.TextBox();
             this.DPIGB.SuspendLayout();
             this.PaperSizeGB.SuspendLayout();
             this.CardSizeGB.SuspendLayout();
+            this.BleedGB.SuspendLayout();
             this.SuspendLayout();
             // 
             // DestinationLabel
@@ -97,10 +112,10 @@
             // 
             // findFolder
             // 
-            this.findFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.findFolder.Location = new System.Drawing.Point(850, 72);
+            this.findFolder.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.findFolder.Location = new System.Drawing.Point(1111, 12);
             this.findFolder.Name = "findFolder";
-            this.findFolder.Size = new System.Drawing.Size(114, 24);
+            this.findFolder.Size = new System.Drawing.Size(146, 51);
             this.findFolder.TabIndex = 2;
             this.findFolder.Text = "Find Folder";
             this.findFolder.UseVisualStyleBackColor = true;
@@ -125,17 +140,6 @@
             this.folderText.Size = new System.Drawing.Size(265, 20);
             this.folderText.TabIndex = 4;
             // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(251, 778);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(89, 17);
-            this.label5.TabIndex = 8;
-            this.label5.Text = "Bleed in mm ";
-            this.label5.Click += new System.EventHandler(this.label5_Click);
-            // 
             // DestinationTB
             // 
             this.DestinationTB.Location = new System.Drawing.Point(619, 701);
@@ -146,33 +150,35 @@
             // 
             // frontText
             // 
-            this.frontText.Location = new System.Drawing.Point(225, 72);
+            this.frontText.Location = new System.Drawing.Point(276, 78);
             this.frontText.Name = "frontText";
-            this.frontText.Size = new System.Drawing.Size(140, 20);
+            this.frontText.Size = new System.Drawing.Size(214, 20);
             this.frontText.TabIndex = 15;
             // 
             // rearText
             // 
-            this.rearText.Location = new System.Drawing.Point(688, 75);
+            this.rearText.Location = new System.Drawing.Point(741, 78);
             this.rearText.Name = "rearText";
-            this.rearText.Size = new System.Drawing.Size(140, 20);
+            this.rearText.Size = new System.Drawing.Size(223, 20);
             this.rearText.TabIndex = 16;
             // 
             // frontLabel
             // 
             this.frontLabel.AutoSize = true;
-            this.frontLabel.Location = new System.Drawing.Point(40, 75);
+            this.frontLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.frontLabel.Location = new System.Drawing.Point(40, 78);
             this.frontLabel.Name = "frontLabel";
-            this.frontLabel.Size = new System.Drawing.Size(154, 13);
+            this.frontLabel.Size = new System.Drawing.Size(230, 20);
             this.frontLabel.TabIndex = 17;
             this.frontLabel.Text = " Front search (default is \"front\")";
             // 
             // rearLabel
             // 
             this.rearLabel.AutoSize = true;
+            this.rearLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rearLabel.Location = new System.Drawing.Point(511, 78);
             this.rearLabel.Name = "rearLabel";
-            this.rearLabel.Size = new System.Drawing.Size(153, 13);
+            this.rearLabel.Size = new System.Drawing.Size(224, 20);
             this.rearLabel.TabIndex = 18;
             this.rearLabel.Text = "Rear search (default is \"back\")";
             // 
@@ -250,10 +256,11 @@
             // 
             // bleedText
             // 
-            this.bleedText.Location = new System.Drawing.Point(352, 775);
+            this.bleedText.Location = new System.Drawing.Point(302, 24);
             this.bleedText.Name = "bleedText";
             this.bleedText.Size = new System.Drawing.Size(61, 20);
             this.bleedText.TabIndex = 26;
+            this.bleedText.TextChanged += new System.EventHandler(this.bleedText_TextChanged);
             // 
             // addButton
             // 
@@ -293,15 +300,16 @@
             this.quantityListBox.TabIndex = 30;
             this.quantityListBox.SelectedIndexChanged += new System.EventHandler(this.quantityListBox_SelectedIndexChanged);
             // 
-            // label4
+            // FileExtesionLabel
             // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.Location = new System.Drawing.Point(510, 19);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(241, 20);
-            this.label4.TabIndex = 31;
-            this.label4.Text = "Will detect .png .jpeg .jpg .gif files";
+            this.FileExtesionLabel.AutoSize = true;
+            this.FileExtesionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FileExtesionLabel.Location = new System.Drawing.Point(792, 44);
+            this.FileExtesionLabel.Name = "FileExtesionLabel";
+            this.FileExtesionLabel.Size = new System.Drawing.Size(172, 20);
+            this.FileExtesionLabel.TabIndex = 31;
+            this.FileExtesionLabel.Text = "seperate with \' ; \' with \'.\'";
+            this.FileExtesionLabel.Click += new System.EventHandler(this.FileExtesionLabel_Click);
             // 
             // clearButton
             // 
@@ -346,9 +354,10 @@
             // DPI300RB
             // 
             this.DPI300RB.AutoSize = true;
+            this.DPI300RB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DPI300RB.Location = new System.Drawing.Point(17, 19);
             this.DPI300RB.Name = "DPI300RB";
-            this.DPI300RB.Size = new System.Drawing.Size(43, 17);
+            this.DPI300RB.Size = new System.Drawing.Size(50, 21);
             this.DPI300RB.TabIndex = 37;
             this.DPI300RB.Text = "300";
             this.DPI300RB.UseVisualStyleBackColor = true;
@@ -357,9 +366,10 @@
             // 
             this.DPI600RB.AutoSize = true;
             this.DPI600RB.Checked = true;
-            this.DPI600RB.Location = new System.Drawing.Point(80, 19);
+            this.DPI600RB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DPI600RB.Location = new System.Drawing.Point(92, 19);
             this.DPI600RB.Name = "DPI600RB";
-            this.DPI600RB.Size = new System.Drawing.Size(43, 17);
+            this.DPI600RB.Size = new System.Drawing.Size(50, 21);
             this.DPI600RB.TabIndex = 38;
             this.DPI600RB.TabStop = true;
             this.DPI600RB.Text = "600";
@@ -370,9 +380,10 @@
             // 
             this.LetterRB.AutoSize = true;
             this.LetterRB.Checked = true;
+            this.LetterRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.LetterRB.Location = new System.Drawing.Point(22, 19);
             this.LetterRB.Name = "LetterRB";
-            this.LetterRB.Size = new System.Drawing.Size(52, 17);
+            this.LetterRB.Size = new System.Drawing.Size(63, 21);
             this.LetterRB.TabIndex = 40;
             this.LetterRB.TabStop = true;
             this.LetterRB.Text = "Letter";
@@ -381,9 +392,10 @@
             // A4RB
             // 
             this.A4RB.AutoSize = true;
-            this.A4RB.Location = new System.Drawing.Point(93, 19);
+            this.A4RB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.A4RB.Location = new System.Drawing.Point(91, 19);
             this.A4RB.Name = "A4RB";
-            this.A4RB.Size = new System.Drawing.Size(38, 17);
+            this.A4RB.Size = new System.Drawing.Size(43, 21);
             this.A4RB.TabIndex = 41;
             this.A4RB.Text = "A4";
             this.A4RB.UseVisualStyleBackColor = true;
@@ -392,7 +404,7 @@
             // 
             this.DPIGB.Controls.Add(this.DPI300RB);
             this.DPIGB.Controls.Add(this.DPI600RB);
-            this.DPIGB.Location = new System.Drawing.Point(43, 699);
+            this.DPIGB.Location = new System.Drawing.Point(77, 699);
             this.DPIGB.Name = "DPIGB";
             this.DPIGB.Size = new System.Drawing.Size(159, 51);
             this.DPIGB.TabIndex = 42;
@@ -403,7 +415,7 @@
             // 
             this.PaperSizeGB.Controls.Add(this.A4RB);
             this.PaperSizeGB.Controls.Add(this.LetterRB);
-            this.PaperSizeGB.Location = new System.Drawing.Point(254, 699);
+            this.PaperSizeGB.Location = new System.Drawing.Point(298, 699);
             this.PaperSizeGB.Name = "PaperSizeGB";
             this.PaperSizeGB.Size = new System.Drawing.Size(159, 51);
             this.PaperSizeGB.TabIndex = 43;
@@ -415,7 +427,7 @@
             this.DestinationFolderbtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.DestinationFolderbtn.Location = new System.Drawing.Point(851, 697);
             this.DestinationFolderbtn.Name = "DestinationFolderbtn";
-            this.DestinationFolderbtn.Size = new System.Drawing.Size(113, 23);
+            this.DestinationFolderbtn.Size = new System.Drawing.Size(113, 24);
             this.DestinationFolderbtn.TabIndex = 44;
             this.DestinationFolderbtn.Text = "Find Folder";
             this.DestinationFolderbtn.UseVisualStyleBackColor = true;
@@ -459,9 +471,188 @@
             this.PokerRB.Text = "Poker";
             this.PokerRB.UseVisualStyleBackColor = true;
             // 
+            // BleedGB
+            // 
+            this.BleedGB.Controls.Add(this.ZeroMMRB);
+            this.BleedGB.Controls.Add(this.CustonBleedRB);
+            this.BleedGB.Controls.Add(this.FiveMMRB);
+            this.BleedGB.Controls.Add(this.ThreeMMRB);
+            this.BleedGB.Controls.Add(this.OneMMRB);
+            this.BleedGB.Controls.Add(this.bleedText);
+            this.BleedGB.Location = new System.Drawing.Point(77, 757);
+            this.BleedGB.Name = "BleedGB";
+            this.BleedGB.Size = new System.Drawing.Size(380, 55);
+            this.BleedGB.TabIndex = 48;
+            this.BleedGB.TabStop = false;
+            this.BleedGB.Text = "Bleed";
+            // 
+            // OneMMRB
+            // 
+            this.OneMMRB.AutoSize = true;
+            this.OneMMRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OneMMRB.Location = new System.Drawing.Point(82, 23);
+            this.OneMMRB.Name = "OneMMRB";
+            this.OneMMRB.Size = new System.Drawing.Size(60, 21);
+            this.OneMMRB.TabIndex = 27;
+            this.OneMMRB.Text = "1 mm";
+            this.OneMMRB.UseVisualStyleBackColor = true;
+            this.OneMMRB.CheckedChanged += new System.EventHandler(this.OneMMRB_CheckedChanged);
+            // 
+            // ThreeMMRB
+            // 
+            this.ThreeMMRB.AutoSize = true;
+            this.ThreeMMRB.Checked = true;
+            this.ThreeMMRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ThreeMMRB.Location = new System.Drawing.Point(148, 23);
+            this.ThreeMMRB.Name = "ThreeMMRB";
+            this.ThreeMMRB.Size = new System.Drawing.Size(60, 21);
+            this.ThreeMMRB.TabIndex = 28;
+            this.ThreeMMRB.TabStop = true;
+            this.ThreeMMRB.Text = "3 mm";
+            this.ThreeMMRB.UseVisualStyleBackColor = true;
+            // 
+            // FiveMMRB
+            // 
+            this.FiveMMRB.AutoSize = true;
+            this.FiveMMRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FiveMMRB.Location = new System.Drawing.Point(215, 23);
+            this.FiveMMRB.Name = "FiveMMRB";
+            this.FiveMMRB.Size = new System.Drawing.Size(60, 21);
+            this.FiveMMRB.TabIndex = 29;
+            this.FiveMMRB.Text = "5 mm";
+            this.FiveMMRB.UseVisualStyleBackColor = true;
+            // 
+            // CustonBleedRB
+            // 
+            this.CustonBleedRB.AutoSize = true;
+            this.CustonBleedRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustonBleedRB.Location = new System.Drawing.Point(281, 27);
+            this.CustonBleedRB.Name = "CustonBleedRB";
+            this.CustonBleedRB.Size = new System.Drawing.Size(14, 13);
+            this.CustonBleedRB.TabIndex = 30;
+            this.CustonBleedRB.UseVisualStyleBackColor = true;
+            // 
+            // ZeroMMRB
+            // 
+            this.ZeroMMRB.AutoSize = true;
+            this.ZeroMMRB.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ZeroMMRB.Location = new System.Drawing.Point(16, 23);
+            this.ZeroMMRB.Name = "ZeroMMRB";
+            this.ZeroMMRB.Size = new System.Drawing.Size(60, 21);
+            this.ZeroMMRB.TabIndex = 31;
+            this.ZeroMMRB.Text = "0 mm";
+            this.ZeroMMRB.UseVisualStyleBackColor = true;
+            // 
+            // LaunchCB
+            // 
+            this.LaunchCB.AutoSize = true;
+            this.LaunchCB.Checked = true;
+            this.LaunchCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.LaunchCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LaunchCB.Location = new System.Drawing.Point(851, 775);
+            this.LaunchCB.Name = "LaunchCB";
+            this.LaunchCB.Size = new System.Drawing.Size(227, 28);
+            this.LaunchCB.TabIndex = 49;
+            this.LaunchCB.Text = "Launch after generating";
+            this.LaunchCB.UseVisualStyleBackColor = true;
+            // 
+            // PNGCB
+            // 
+            this.PNGCB.AutoSize = true;
+            this.PNGCB.Checked = true;
+            this.PNGCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.PNGCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PNGCB.Location = new System.Drawing.Point(508, 15);
+            this.PNGCB.Name = "PNGCB";
+            this.PNGCB.Size = new System.Drawing.Size(67, 28);
+            this.PNGCB.TabIndex = 50;
+            this.PNGCB.Text = ".png";
+            this.PNGCB.UseVisualStyleBackColor = true;
+            // 
+            // JPEGCB
+            // 
+            this.JPEGCB.AutoSize = true;
+            this.JPEGCB.Checked = true;
+            this.JPEGCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.JPEGCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.JPEGCB.Location = new System.Drawing.Point(572, 15);
+            this.JPEGCB.Name = "JPEGCB";
+            this.JPEGCB.Size = new System.Drawing.Size(71, 28);
+            this.JPEGCB.TabIndex = 51;
+            this.JPEGCB.Text = ".jpeg";
+            this.JPEGCB.UseVisualStyleBackColor = true;
+            // 
+            // GIFCB
+            // 
+            this.GIFCB.AutoSize = true;
+            this.GIFCB.Checked = true;
+            this.GIFCB.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.GIFCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.GIFCB.Location = new System.Drawing.Point(649, 15);
+            this.GIFCB.Name = "GIFCB";
+            this.GIFCB.Size = new System.Drawing.Size(53, 28);
+            this.GIFCB.TabIndex = 52;
+            this.GIFCB.Text = ".gif";
+            this.GIFCB.UseVisualStyleBackColor = true;
+            // 
+            // TIFFCB
+            // 
+            this.TIFFCB.AutoSize = true;
+            this.TIFFCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TIFFCB.Location = new System.Drawing.Point(709, 15);
+            this.TIFFCB.Name = "TIFFCB";
+            this.TIFFCB.Size = new System.Drawing.Size(50, 28);
+            this.TIFFCB.TabIndex = 53;
+            this.TIFFCB.Text = ".tiff";
+            this.TIFFCB.UseVisualStyleBackColor = true;
+            // 
+            // CustomExtensionCB
+            // 
+            this.CustomExtensionCB.AutoSize = true;
+            this.CustomExtensionCB.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CustomExtensionCB.Location = new System.Drawing.Point(765, 22);
+            this.CustomExtensionCB.Name = "CustomExtensionCB";
+            this.CustomExtensionCB.Size = new System.Drawing.Size(15, 14);
+            this.CustomExtensionCB.TabIndex = 54;
+            this.CustomExtensionCB.UseVisualStyleBackColor = true;
+            // 
+            // CustomExtensionTB
+            // 
+            this.CustomExtensionTB.Location = new System.Drawing.Point(786, 21);
+            this.CustomExtensionTB.Name = "CustomExtensionTB";
+            this.CustomExtensionTB.Size = new System.Drawing.Size(178, 20);
+            this.CustomExtensionTB.TabIndex = 55;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(976, 78);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(109, 20);
+            this.label2.TabIndex = 57;
+            this.label2.Text = "Mutual search";
+            // 
+            // MutualTB
+            // 
+            this.MutualTB.Location = new System.Drawing.Point(1095, 78);
+            this.MutualTB.Name = "MutualTB";
+            this.MutualTB.Size = new System.Drawing.Size(272, 20);
+            this.MutualTB.TabIndex = 56;
+            // 
             // Form1
             // 
             this.ClientSize = new System.Drawing.Size(1379, 824);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.MutualTB);
+            this.Controls.Add(this.CustomExtensionTB);
+            this.Controls.Add(this.CustomExtensionCB);
+            this.Controls.Add(this.TIFFCB);
+            this.Controls.Add(this.GIFCB);
+            this.Controls.Add(this.JPEGCB);
+            this.Controls.Add(this.PNGCB);
+            this.Controls.Add(this.LaunchCB);
+            this.Controls.Add(this.BleedGB);
             this.Controls.Add(this.CardSizeGB);
             this.Controls.Add(this.DestinationFileNameTB);
             this.Controls.Add(this.DestinationFileName);
@@ -472,12 +663,11 @@
             this.Controls.Add(this.updateQuantityButton);
             this.Controls.Add(this.removeButton);
             this.Controls.Add(this.clearButton);
-            this.Controls.Add(this.label4);
+            this.Controls.Add(this.FileExtesionLabel);
             this.Controls.Add(this.quantityListBox);
             this.Controls.Add(this.rearListBox);
             this.Controls.Add(this.frontListBox);
             this.Controls.Add(this.addButton);
-            this.Controls.Add(this.bleedText);
             this.Controls.Add(this.quantityLabel);
             this.Controls.Add(this.quantityText);
             this.Controls.Add(this.changeFront);
@@ -488,7 +678,6 @@
             this.Controls.Add(this.rearText);
             this.Controls.Add(this.frontText);
             this.Controls.Add(this.DestinationTB);
-            this.Controls.Add(this.label5);
             this.Controls.Add(this.folderText);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.findFolder);
@@ -501,6 +690,8 @@
             this.PaperSizeGB.PerformLayout();
             this.CardSizeGB.ResumeLayout(false);
             this.CardSizeGB.PerformLayout();
+            this.BleedGB.ResumeLayout(false);
+            this.BleedGB.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -514,7 +705,6 @@
         private System.Windows.Forms.Button findFolder;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox folderText;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox DestinationTB;
         private System.Windows.Forms.TextBox frontText;
         private System.Windows.Forms.TextBox rearText;
@@ -532,7 +722,7 @@
         private System.Windows.Forms.ListBox frontListBox;
         private System.Windows.Forms.ListBox rearListBox;
         private System.Windows.Forms.ListBox quantityListBox;
-        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label FileExtesionLabel;
         private System.Windows.Forms.Button clearButton;
         private System.Windows.Forms.Button removeButton;
         private System.Windows.Forms.Button updateQuantityButton;
@@ -548,5 +738,20 @@
         private System.Windows.Forms.TextBox DestinationFileNameTB;
         private System.Windows.Forms.GroupBox CardSizeGB;
         private System.Windows.Forms.RadioButton PokerRB;
+        private System.Windows.Forms.GroupBox BleedGB;
+        private System.Windows.Forms.RadioButton FiveMMRB;
+        private System.Windows.Forms.RadioButton ThreeMMRB;
+        private System.Windows.Forms.RadioButton OneMMRB;
+        private System.Windows.Forms.RadioButton CustonBleedRB;
+        private System.Windows.Forms.RadioButton ZeroMMRB;
+        private System.Windows.Forms.CheckBox LaunchCB;
+        private System.Windows.Forms.CheckBox PNGCB;
+        private System.Windows.Forms.CheckBox JPEGCB;
+        private System.Windows.Forms.CheckBox GIFCB;
+        private System.Windows.Forms.CheckBox TIFFCB;
+        private System.Windows.Forms.CheckBox CustomExtensionCB;
+        private System.Windows.Forms.TextBox CustomExtensionTB;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox MutualTB;
     }
 }

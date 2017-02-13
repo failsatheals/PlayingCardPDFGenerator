@@ -25,14 +25,14 @@ namespace PDFGenerator
         private readonly float dpi600Height_A4 = 7016;
         private readonly float dpi300Width_A4 = 2480;
         private readonly float dpi300Height_A4 = 3508;
-       
+
         private readonly float dpi600PPMM_A4 = 4961.00f / 210.00f;
         private readonly float dpi300PPMM_A4 = 2480.00f / 210.00f;
         private readonly float dpi600Width_Letter = 5100;
         private readonly float dpi600Height_Letter = 6600;
         private readonly float dpi300Width_Letter = 2550;
         private readonly float dpi300Height_Letter = 3300;
-        
+
         private readonly float dpi600PPMM_Letter = 5100.00f / 215.90f;
         private readonly float dpi300PPMM_Letter = 2550.00f / 279.40f;
 
@@ -73,10 +73,16 @@ namespace PDFGenerator
                 frontListView.Groups.Add(new ListViewGroup("Used"));
                 int i = 0;
                 int j = 0;
+                List<string> extensions = determineFileExtensions();
+                string[] fronts = parseTextBox(frontText);
+                string[] rears = parseTextBox(rearText);
+                string[] mutual = parseTextBox(MutualTB);
+
+
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file).ToLower();
-                    if (fileName.Contains(".png") || fileName.Contains(".jpeg") || fileName.Contains(".jpg") || fileName.Contains(".gif"))
+                    if (extensions.Any(u => fileName.Contains(u)) == true)
 
                         try
                         {
@@ -84,18 +90,22 @@ namespace PDFGenerator
                             rearListView.HideSelection = false;
 
                             System.Drawing.Image imageToList = System.Drawing.Image.FromFile(file);
-                            if (fileName.Contains(determineTBDefault(frontText)))
+                            if (mutual.Any(u => fileName.Contains(u)) == true)
                             {
-                                frontImageList.Images.Add(imageToList);
-                                frontListView.Items.Add(Path.GetFileName(file), i);
-                                i++;
+                                if (fronts.Any(u => fileName.Contains(u)) == true)
+                                {
+                                    frontImageList.Images.Add(imageToList);
+                                    frontListView.Items.Add(Path.GetFileName(file), i);
+                                    i++;
+                                }
+                                else if (rears.Any(u => fileName.Contains(u)) == true)
+                                {
+                                    rearImageList.Images.Add(imageToList);
+                                    rearListView.Items.Add(Path.GetFileName(file), j);
+                                    j++;
+                                }
                             }
-                            else if (fileName.Contains(determineTBDefault(rearText)))
-                            {
-                                rearImageList.Images.Add(imageToList);
-                                rearListView.Items.Add(Path.GetFileName(file), j);
-                                j++;
-                            }
+
 
 
                         }
@@ -108,6 +118,8 @@ namespace PDFGenerator
             }
 
         }
+
+
 
         private void label3_Click(object sender, EventArgs e)
         {
@@ -183,7 +195,11 @@ namespace PDFGenerator
                     case "DestinationTB":
                         return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
                     case "DestinationFileNameTB":
-                        return "OrderedDeck_" + System.DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")+ ".pdf";
+                        return "OrderedDeck_" + System.DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss") + ".pdf";
+                    case "CustomExtensionTB":
+                        return "";
+                    case "MutualTB":
+                        return "";
                     default:
                         return "default";
 
@@ -333,14 +349,14 @@ namespace PDFGenerator
             //pdf.SetPageSize(rect);
             pdf.AddCreator("ICWT Dev");
             string unorderedPDF = "UnorderedDeck.pdf";
-            
+
             var output = File.Create(unorderedPDF);
             PdfWriter.GetInstance(pdf, output);
             pdf.Open();
             int pages = calculatePages();
             float[,] cords = calculateCords(pdf);
             var cord = 0;
-            foreach(var card in deck.Cards)
+            foreach (var card in deck.Cards)
             {
                 for (var q = 0; q < card.quantity; q++)
                 {
@@ -379,14 +395,14 @@ namespace PDFGenerator
 
             }
             pdf.Close();
-           reorderPDF(unorderedPDF);
-            
-          
+            reorderPDF(unorderedPDF);
+
+
 
         }
 
-       
-     
+
+
 
         private void reorderPDF(string unorderedPDF)
         {
@@ -397,7 +413,7 @@ namespace PDFGenerator
             {
                 using (Document pdf = new Document(reader.GetPageSizeWithRotation(1)))
                 {
-                    
+
                     PdfCopy copy = new PdfCopy(pdf, fs);
                     pdf.Open();
                     copy.SetLinearPageMode();
@@ -409,20 +425,17 @@ namespace PDFGenerator
                     int counter = 0;
                     for (int i = 1; i <= reader.NumberOfPages; i++)
                     {
-                        
-                        if(i%2 == 0)
+
+                        if (i % 2 == 0)
                         {
-                            newOrder[i-1] = (reader.NumberOfPages/2)+newOrder[i-2];
+                            newOrder[i - 1] = (reader.NumberOfPages / 2) + newOrder[i - 2];
 
                         }
                         else
                         {
-                            newOrder[i-1] = i - counter;
+                            newOrder[i - 1] = i - counter;
                             counter++;
                         }
-
-                        
-
                     }
                     //Reorder pages
                     copy.ReorderPages(newOrder);
@@ -431,12 +444,16 @@ namespace PDFGenerator
                     reader.Close();
                 }
             }
-            Process.Start(output);
+            if (LaunchCB.Checked)
+            {
+                Process.Start(output);
+            }
+
         }
 
-       
 
-       
+
+
 
         private float[,] calculateCords(Document pdf)
         {
@@ -499,7 +516,7 @@ namespace PDFGenerator
             }
         }
 
-       
+
 
 
         private void determineCardSize()
@@ -520,28 +537,86 @@ namespace PDFGenerator
 
         private float determineBleedPixel()
         {
-            float bleedPixel = float.Parse(determineTBDefault(bleedText));
-            if (DPI300RB.Checked == true)
+            if (ZeroMMRB.Checked)
             {
+                return calculatePixelFromMM(0);
 
-                return calculatePixelFromMM(bleedPixel);
             }
-            else if (DPI600RB.Checked == true)
+            else if (OneMMRB.Checked)
+            {
+                return calculatePixelFromMM(1);
+
+            }
+            else if (ThreeMMRB.Checked)
+            {
+                return calculatePixelFromMM(3);
+
+            }
+            else if (FiveMMRB.Checked)
             {
 
-                return calculatePixelFromMM(bleedPixel);
+                return calculatePixelFromMM(5);
+            }
+            else if (CustonBleedRB.Checked)
+            {
+                return calculatePixelFromMM(float.Parse(determineTBDefault(bleedText)));
+
             }
             else
             {
+                return calculatePixelFromMM(0);
 
-                return calculatePixelFromMM(bleedPixel);
             }
+
+
 
         }
 
         private string determineOutputFile()
         {
-            return Path.Combine(determineTBDefault(DestinationTB), determineTBDefault(DestinationFileNameTB) ); ;
+            return Path.Combine(determineTBDefault(DestinationTB), determineTBDefault(DestinationFileNameTB)); ;
+        }
+
+        private List<string> determineFileExtensions()
+        {
+            List<string> extension = new List<string>();
+            if (PNGCB.Checked)
+            {
+                extension.Add(".png");
+
+            }
+            if (JPEGCB.Checked)
+            {
+                extension.Add(".jpeg");
+                extension.Add(".jpg");
+
+            }
+            if (GIFCB.Checked)
+            {
+                extension.Add(".gif");
+
+            }
+            if (TIFFCB.Checked)
+            {
+                extension.Add(".tiff");
+
+            }
+            if (CustomExtensionCB.Checked)
+            {
+                extension.AddRange(parseTextBox(CustomExtensionTB));
+                
+            }
+            return extension;
+        }
+
+        private string[] parseTextBox(TextBox textBox)
+        {
+            string[] singleText = new string[]{ determineTBDefault(textBox)};
+            if (singleText[0] != "" && textBox.Text.Length > 3)
+            {
+                return textBox.Text.Split(';');
+            }
+            return singleText;
         }
 
         private int calculatePages()
@@ -552,15 +627,15 @@ namespace PDFGenerator
 
         private int calculatePixelFromMMRounded(float lengthMM)
         {
-            return (int) Math.Round(((lengthMM / mmToInch)*deck.dpi));
+            return (int)Math.Round(((lengthMM / mmToInch) * deck.dpi));
         }
         private float calculatePixelFromMM(float lengthMM)
         {
             return ((lengthMM / mmToInch) * deck.dpi);
         }
-       
 
-       
+
+
 
         private void DPI600RB_CheckedChanged(object sender, EventArgs e)
         {
@@ -581,7 +656,22 @@ namespace PDFGenerator
 
         }
 
-       
+        private void bleedText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OneMMRB_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void FileExtesionLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
 
     }
 }

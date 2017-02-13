@@ -25,18 +25,22 @@ namespace PDFGenerator
         private readonly float dpi600Height_A4 = 7016;
         private readonly float dpi300Width_A4 = 2480;
         private readonly float dpi300Height_A4 = 3508;
-        private readonly float mmWidth_A4 = 210;
-        private readonly float mmHeight_A4 = 297;
+       
         private readonly float dpi600PPMM_A4 = 4961.00f / 210.00f;
         private readonly float dpi300PPMM_A4 = 2480.00f / 210.00f;
         private readonly float dpi600Width_Letter = 5100;
         private readonly float dpi600Height_Letter = 6600;
         private readonly float dpi300Width_Letter = 2550;
         private readonly float dpi300Height_Letter = 3300;
-        private readonly float mmWidth_Letter = 215.90f;
-        private readonly float mmHeight_Letter = 279.40f;
+        
         private readonly float dpi600PPMM_Letter = 5100.00f / 215.90f;
         private readonly float dpi300PPMM_Letter = 2550.00f / 279.40f;
+
+        private readonly float mmToInch = 25.4f;
+        private readonly float mmWidth_A4 = 210;
+        private readonly float mmHeight_A4 = 297;
+        private readonly float mmWidth_Letter = 215.90f;
+        private readonly float mmHeight_Letter = 279.40f;
         private readonly float pokerWidthMM = 63;
         private readonly float pokerHeightMM = 88;
 
@@ -80,13 +84,13 @@ namespace PDFGenerator
                             rearListView.HideSelection = false;
 
                             System.Drawing.Image imageToList = System.Drawing.Image.FromFile(file);
-                            if (fileName.Contains(determineDefault(frontText)))
+                            if (fileName.Contains(determineTBDefault(frontText)))
                             {
                                 frontImageList.Images.Add(imageToList);
                                 frontListView.Items.Add(Path.GetFileName(file), i);
                                 i++;
                             }
-                            else if (fileName.Contains(determineDefault(rearText)))
+                            else if (fileName.Contains(determineTBDefault(rearText)))
                             {
                                 rearImageList.Images.Add(imageToList);
                                 rearListView.Items.Add(Path.GetFileName(file), j);
@@ -162,7 +166,7 @@ namespace PDFGenerator
             return int.TryParse(text, out quantity);
         }
 
-        public string determineDefault(TextBox textBox)
+        public string determineTBDefault(TextBox textBox)
         {
             if (textBox.Text == "")
             {
@@ -176,6 +180,10 @@ namespace PDFGenerator
                         return "1";
                     case "bleedText":
                         return "0";
+                    case "DestinationTB":
+                        return Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+                    case "DestinationFileNameTB":
+                        return "OrderedDeck_" + System.DateTime.Now.ToString("yyyy_MM_dd_HH_mm_ss")+ ".pdf";
                     default:
                         return "default";
 
@@ -213,7 +221,7 @@ namespace PDFGenerator
             else
             {
 
-                return Convert.ToInt32(determineDefault(quantityText));
+                return Convert.ToInt32(determineTBDefault(quantityText));
             }
 
 
@@ -315,12 +323,17 @@ namespace PDFGenerator
         private void generate_Click(object sender, EventArgs e)
         {
             //check if 0 cards in deck
+            determineDPI();
+            determineCardSize();
+            determinePageSize();
 
-            iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(dpi600Width_A4, dpi600Height_A4);
+
+            iTextSharp.text.Rectangle rect = new iTextSharp.text.Rectangle(deck.widthPaperPixel, deck.heightPaperPixel);
             Document pdf = new Document(rect);
             //pdf.SetPageSize(rect);
             pdf.AddCreator("ICWT Dev");
             string unorderedPDF = "UnorderedDeck.pdf";
+            
             var output = File.Create(unorderedPDF);
             PdfWriter.GetInstance(pdf, output);
             pdf.Open();
@@ -337,7 +350,7 @@ namespace PDFGenerator
                         cord = 0;
                     }
                     iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + card.frontFP);
-                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM_A4, pokerHeightMM * dpi600PPMM_A4);
+                    image.ScaleAbsolute(deck.widthCardPixel, deck.heightCardPixel);
                     image.SetAbsolutePosition(cords[cord, 0], cords[cord, 1]);
                     pdf.Add(image);
                     cord++;
@@ -357,7 +370,7 @@ namespace PDFGenerator
                         cord = 0;
                     }
                     iTextSharp.text.Image image = iTextSharp.text.Image.GetInstance(folderText.Text + "\\" + card.rearFP);
-                    image.ScaleAbsolute(pokerWidthMM * dpi600PPMM_A4, pokerHeightMM * dpi600PPMM_A4);
+                    image.ScaleAbsolute(deck.widthCardPixel, deck.heightCardPixel);
                     image.SetAbsolutePosition(cords[cord, 0], cords[cord, 1]);
                     pdf.Add(image);
                     cord++;
@@ -366,18 +379,19 @@ namespace PDFGenerator
 
             }
             pdf.Close();
-            reorderPDF(unorderedPDF);
+           reorderPDF(unorderedPDF);
             
           
 
         }
 
+       
+     
+
         private void reorderPDF(string unorderedPDF)
         {
-
-            var output = ("OrderedDeck.pdf");
-
             PdfReader reader = new PdfReader(unorderedPDF);
+            var output = determineOutputFile();
 
             using (FileStream fs = new FileStream(output, FileMode.Create, FileAccess.Write, FileShare.None))
             {
@@ -413,6 +427,8 @@ namespace PDFGenerator
                     //Reorder pages
                     copy.ReorderPages(newOrder);
                     pdf.Close();
+                    fs.Close();
+                    reader.Close();
                 }
             }
             Process.Start(output);
@@ -420,20 +436,22 @@ namespace PDFGenerator
 
        
 
+       
+
         private float[,] calculateCords(Document pdf)
         {
             float[,] cords = new float[9, 2];
-            float bleed = determineBleed();
-            float x = (pdf.PageSize.Width / 2) - ((pokerWidthMM * dpi600PPMM_A4) / 2) - (pokerWidthMM * dpi600PPMM_A4) - bleed;
-            float y = (pdf.PageSize.Height / 2) - ((pokerHeightMM * dpi600PPMM_A4) / 2) - (pokerHeightMM * dpi600PPMM_A4) - bleed;
+            float bleedPixel = determineBleedPixel();
+            float x = (pdf.PageSize.Width / 2) - ((deck.widthCardPixel) / 2) - (deck.widthCardPixel) - bleedPixel;
+            float y = (pdf.PageSize.Height / 2) - ((deck.heightCardPixel) / 2) - (deck.heightCardPixel) - bleedPixel;
             int z = 0;
             for (var i = 0; i < 3; i++)
             {
                 for (var j = 0; j < 3; j++)
                 {
 
-                    cords[z, 0] = x + j * (pokerWidthMM * dpi600PPMM_A4 + bleed);
-                    cords[z, 1] = y + i * (pokerHeightMM * dpi600PPMM_A4 + bleed);
+                    cords[z, 0] = x + j * (deck.widthCardPixel + bleedPixel);
+                    cords[z, 1] = y + i * (deck.heightCardPixel + bleedPixel);
                     z++;
                 }
 
@@ -442,26 +460,88 @@ namespace PDFGenerator
 
             return cords;
         }
-
-        private float determineBleed()
+        private void determineDPI()
         {
-            float bleed = float.Parse(determineDefault(bleedText));
+            if (DPI300RB.Checked)
+            {
+                deck.dpi = 300;
+
+            }
+            else if (DPI600RB.Checked)
+            {
+                deck.dpi = 600;
+
+            }
+            else
+            {
+                deck.dpi = 300;
+            }
+        }
+        private void determinePageSize()
+        {
+            if (LetterRB.Checked)
+            {
+                deck.heightPaperPixel = calculatePixelFromMMRounded(mmHeight_Letter);
+                deck.widthPaperPixel = calculatePixelFromMMRounded(mmWidth_Letter);
+
+            }
+            else if (A4RB.Checked)
+            {
+                deck.heightPaperPixel = calculatePixelFromMMRounded(mmHeight_A4);
+                deck.widthPaperPixel = calculatePixelFromMMRounded(mmWidth_A4);
+
+            }
+            else
+            {
+                deck.heightPaperPixel = calculatePixelFromMMRounded(mmHeight_Letter);
+                deck.widthPaperPixel = calculatePixelFromMMRounded(mmWidth_Letter);
+
+            }
+        }
+
+       
+
+
+        private void determineCardSize()
+        {
+            //default will be poker sizes, but allowing for potentially more sizes. 
+            if (PokerRB.Checked)
+            {
+                deck.widthCardPixel = calculatePixelFromMMRounded(pokerWidthMM);
+                deck.heightCardPixel = calculatePixelFromMMRounded(pokerHeightMM);
+            }
+            else
+            {
+                deck.widthCardPixel = calculatePixelFromMMRounded(pokerWidthMM);
+                deck.heightCardPixel = calculatePixelFromMMRounded(pokerHeightMM);
+
+            }
+        }
+
+        private float determineBleedPixel()
+        {
+            float bleedPixel = float.Parse(determineTBDefault(bleedText));
             if (DPI300RB.Checked == true)
             {
 
-                return bleed * dpi300PPMM_A4;
+                return calculatePixelFromMM(bleedPixel);
             }
             else if (DPI600RB.Checked == true)
             {
 
-                return bleed * dpi600PPMM_A4;
+                return calculatePixelFromMM(bleedPixel);
             }
             else
             {
 
-                return bleed;
+                return calculatePixelFromMM(bleedPixel);
             }
 
+        }
+
+        private string determineOutputFile()
+        {
+            return Path.Combine(determineTBDefault(DestinationTB), determineTBDefault(DestinationFileNameTB) ); ;
         }
 
         private int calculatePages()
@@ -470,10 +550,34 @@ namespace PDFGenerator
             return (int)Math.Ceiling(pages);
         }
 
+        private int calculatePixelFromMMRounded(float lengthMM)
+        {
+            return (int) Math.Round(((lengthMM / mmToInch)*deck.dpi));
+        }
+        private float calculatePixelFromMM(float lengthMM)
+        {
+            return ((lengthMM / mmToInch) * deck.dpi);
+        }
+       
+
        
 
         private void DPI600RB_CheckedChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                DestinationTB.Clear();
+                folderText.Text = fbd.SelectedPath.ToString();
+            }
+
+
 
         }
 

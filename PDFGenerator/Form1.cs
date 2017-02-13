@@ -574,7 +574,13 @@ namespace PDFGenerator
 
         private string determineOutputFile()
         {
-            return Path.Combine(determineTBDefault(DestinationTB), determineTBDefault(DestinationFileNameTB)); ;
+           string output =  Path.Combine(determineTBDefault(DestinationTB), determineTBDefault(DestinationFileNameTB));
+           if (!output.Contains(".pdf"))
+           {
+               output = output + ".pdf";
+
+           }
+           return output;
         }
 
         private List<string> determineFileExtensions()
@@ -649,7 +655,7 @@ namespace PDFGenerator
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 DestinationTB.Clear();
-                folderText.Text = fbd.SelectedPath.ToString();
+                DestinationTB.Text = fbd.SelectedPath.ToString();
             }
 
 

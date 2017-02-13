@@ -15,7 +15,9 @@ namespace PDFGenerator
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form cardGenForm = new Form1();
+            cardGenForm.Text = "Card image to PDF generator";
+            Application.Run(cardGenForm);
         }
     }
 }

@@ -10,6 +10,17 @@ namespace PDFGenerator
     {
         public List<Card> Cards { get; set; }
 
+        public int widthCardPixel { get; set; }
+
+        public int heightCardPixel { get; set; }
+        public int widthPaperPixel { get; set; }
+
+        public int heightPaperPixel { get; set; }
+
+        public int dpi { get; set; }
+
+
+
         public Deck()
         {
 

@@ -8,6 +8,7 @@ namespace PDFGenerator
 {
     class Card
     {
+        //This class is used to digitally mock playing cards
         public Image frontImage { get; set; }
         public Image rearImage { get; set; }
         public int quantity { get; set; }
